@@ -1,21 +1,32 @@
-# Meowcal Sub films
+# Product films
 
-Promotional and launch films for [Meowcal Sub](https://github.com/PeterShanxin/Meowcal-Sub) and
-[Meowcal Sub 2](https://github.com/PeterShanxin/Meowcal-Sub-2).
+Launch and promotional films for PeterShanxin's products:
+[Meowcal Sub](https://github.com/PeterShanxin/Meowcal-Sub),
+[Meowcal Sub 2](https://github.com/PeterShanxin/Meowcal-Sub-2) and
+[Remote Commander Tray](https://github.com/PeterShanxin/Remote-Commander-Tray).
+(Formerly `Meowcal-Sub-films`; old links redirect here.)
 Each film lives in its own folder with its own README, source, score and
 render instructions. Picture and sound are generated from code and share one
 frame-based timeline per film.
 
 ## Films
 
+### Remote Commander Tray
+
 | Folder | Film | Cuts | Status |
 | --- | --- | --- | --- |
-| [`sub2-remix/`](sub2-remix/) | 好字幕，自动上屏。 Launch film for [Meowcal Sub 2 · 妙影2](https://github.com/PeterShanxin/Meowcal-Sub-2): 想看的片，只有外语字幕？ over a horror scream, a cold open cut on the beat, then one take over Sintel in which the app finds the fansub, recognises the line on screen and keeps the second subtitle in step through a pause and a rewind. | 50.9 s portrait and 3:4 cover | Released: [sub2-remix-v1.1.0](https://github.com/PeterShanxin/Meowcal-Sub-films/releases/tag/sub2-remix-v1.1.0) |
-| [`fable-vs-astra/`](fable-vs-astra/) | 两个 AI 做宣传片，你选哪边？ The same promo request to GPT-6 Astra, then Fable 5.2, in a typed chat; each film plays in turn with comments under it. | 152 s portrait and 3:4 cover | Released: [fable-vs-astra-v1.0.0](https://github.com/PeterShanxin/Meowcal-Sub-films/releases/tag/fable-vs-astra-v1.0.0) |
-| [`brand-evolution/`](brand-evolution/) | 换上新意，继续入戏: one continuous take from the old layout to the Chinese interface, a real viewing demo, the old cat logo becoming the new mark, and the name 妙影. | 32 s landscape and 3:4 cover | Released: [brand-evolution-v1.0.0](https://github.com/PeterShanxin/Meowcal-Sub-films/releases/tag/brand-evolution-v1.0.0) |
-| [`reading-test/`](reading-test/) | 看个剧，还要做题？ A film scene turns into a reading test; a translated subtitle resolves the misunderstanding. | 21.6 s portrait and 3:4 cover | Approved; [v1.0.0](https://github.com/PeterShanxin/Meowcal-Sub-films/releases/tag/reading-test-v1.0.0) |
-| [`launch-15s/`](launch-15s/) | Launch film: the capture box is the whole film. | 15 s, landscape, vertical and square | Released: [v1.0.0](https://github.com/PeterShanxin/Meowcal-Sub-films/releases/tag/v1.0.0) |
-| [`cat-drama/`](cat-drama/) | 就差这一句: cats watch a melodrama, the translation drops out at the climax, and Meowcal Sub reads the subtitle. | 60 s landscape and portrait, 30 s portrait, English 60 s | Released: [cat-drama-v1.2.0](https://github.com/PeterShanxin/Meowcal-Sub-films/releases/tag/cat-drama-v1.2.0) |
+| [`remote-commander-tray-launch/`](remote-commander-tray-launch/) | The window you can't close: one take in which a PowerShell window running `desktop-commander remote` folds into the tray's real status icon, which then starts at sign-in, restarts after a crash, asks only when sign-in is needed, and opens its real menu. | 35 s landscape 1080p60 and cover | Released: [rct-launch-v1.0.0](https://github.com/PeterShanxin/product-films/releases/tag/rct-launch-v1.0.0) |
+
+### Meowcal Sub
+
+| Folder | Film | Cuts | Status |
+| --- | --- | --- | --- |
+| [`sub2-remix/`](sub2-remix/) | 好字幕，自动上屏。 Launch film for [Meowcal Sub 2 · 妙影2](https://github.com/PeterShanxin/Meowcal-Sub-2): 想看的片，只有外语字幕？ over a horror scream, a cold open cut on the beat, then one take over Sintel in which the app finds the fansub, recognises the line on screen and keeps the second subtitle in step through a pause and a rewind. | 50.9 s portrait and 3:4 cover | Released: [sub2-remix-v1.1.0](https://github.com/PeterShanxin/product-films/releases/tag/sub2-remix-v1.1.0) |
+| [`fable-vs-astra/`](fable-vs-astra/) | 两个 AI 做宣传片，你选哪边？ The same promo request to GPT-6 Astra, then Fable 5.2, in a typed chat; each film plays in turn with comments under it. | 152 s portrait and 3:4 cover | Released: [fable-vs-astra-v1.0.0](https://github.com/PeterShanxin/product-films/releases/tag/fable-vs-astra-v1.0.0) |
+| [`brand-evolution/`](brand-evolution/) | 换上新意，继续入戏: one continuous take from the old layout to the Chinese interface, a real viewing demo, the old cat logo becoming the new mark, and the name 妙影. | 32 s landscape and 3:4 cover | Released: [brand-evolution-v1.0.0](https://github.com/PeterShanxin/product-films/releases/tag/brand-evolution-v1.0.0) |
+| [`reading-test/`](reading-test/) | 看个剧，还要做题？ A film scene turns into a reading test; a translated subtitle resolves the misunderstanding. | 21.6 s portrait and 3:4 cover | Approved; [v1.0.0](https://github.com/PeterShanxin/product-films/releases/tag/reading-test-v1.0.0) |
+| [`launch-15s/`](launch-15s/) | Launch film: the capture box is the whole film. | 15 s, landscape, vertical and square | Released: [v1.0.0](https://github.com/PeterShanxin/product-films/releases/tag/v1.0.0) |
+| [`cat-drama/`](cat-drama/) | 就差这一句: cats watch a melodrama, the translation drops out at the climax, and Meowcal Sub reads the subtitle. | 60 s landscape and portrait, 30 s portrait, English 60 s | Released: [cat-drama-v1.2.0](https://github.com/PeterShanxin/product-films/releases/tag/cat-drama-v1.2.0) |
 | [`read-beyond-language/`](read-beyond-language/) | Read beyond language: a subtitle selection opens into understanding. | 15 s | Alternative concept, kept as its own project |
 | [`early-launch/`](early-launch/) | Earlier launch video, preserved for reference. | 15 s | Needs improvement |
 
@@ -23,7 +34,7 @@ frame-based timeline per film.
 
 `launch-15s/`, `cat-drama/`, `reading-test/`, `fable-vs-astra/` and `sub2-remix/` share one Remotion toolchain at
 the repository root (`package.json`, `remotion.config.ts`, `tsconfig.json`).
-`read-beyond-language/` and `brand-evolution/` have their own `package.json` and install separately.
+`read-beyond-language/`, `brand-evolution/` and `remote-commander-tray-launch/` have their own `package.json` and install separately.
 Run everything from the repository root:
 
 ```bash
@@ -50,7 +61,9 @@ compositions, and a `public/` directory. Add `studio:<name>` and audio scripts t
 
 ## License
 
-Source is licensed under [AGPL-3.0-only](LICENSE), as for Meowcal Sub. The license
+Source is licensed under [AGPL-3.0-only](LICENSE), as for Meowcal Sub, except
+`remote-commander-tray-launch/`, which is MIT licensed like Remote Commander Tray
+(its own `LICENSE`). The license
 does not grant rights to the Meowcal Sub name or logo; see the app’s
 [trademark policy](https://github.com/PeterShanxin/Meowcal-Sub/blob/main/TRADEMARKS.md).
 Asset provenance is recorded in each film's README; `read-beyond-language/`
