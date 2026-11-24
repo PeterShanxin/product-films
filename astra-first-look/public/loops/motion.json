@@ -1,0 +1,22 @@
+[
+ {
+  "photo": "01-lens",
+  "moving_pixels_pct": 0.6,
+  "max_displacement_px": 4.6
+ },
+ {
+  "photo": "02-coast",
+  "moving_pixels_pct": 29.4,
+  "max_displacement_px": 17.3
+ },
+ {
+  "photo": "03-cabin",
+  "moving_pixels_pct": 43.5,
+  "max_displacement_px": 20.2
+ },
+ {
+  "photo": "04-shore",
+  "moving_pixels_pct": 20.7,
+  "max_displacement_px": 23.1
+ }
+]
