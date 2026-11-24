@@ -39,9 +39,9 @@ npm run render:astra-first-look   # renders the picture muted, then muxes public
 # cover plates: frame 1.0 s of the shore loop, plain and drained, plus its outline
 ffmpeg -ss 1.0 -i astra-first-look/public/loops/04-shore.mp4 -frames:v 1 astra-first-look/public/cover/shore.png
 ffmpeg -ss 1.0 -i astra-first-look/public/loops/04-shore-drained.mp4 -frames:v 1 astra-first-look/public/cover/shore-drained.png
-copy astra-first-look\public\loops-shore-outline.png astra-first-look\public\cover\shore-outline.png
+copy astra-first-look\public\loops\04-shore-outline.png astra-first-look\public\cover\shore-outline.png
 npm run cover:astra-first-look
-node astra-first-look/audio/score/check-sync.mjs astra-first-look/out/astra-first-look-v3.mp4 astra-first-look/audio/score.json --ffmpeg ffmpeg
+node astra-first-look/audio/score/check-sync.mjs astra-first-look/out/astra-first-look.mp4 astra-first-look/audio/score.json --ffmpeg ffmpeg
 ```
 
 Astra's film, the loop videos, cover plates, the score WAV and `out/` are not committed. The motion masks, outlines and `motion.json` are.
