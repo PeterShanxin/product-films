@@ -20,15 +20,15 @@ import { STATE_COLOR, State } from "./StatusIcon";
 // tray, make room for the menu, pull back out for the logo.
 const camKeys: [number, Cam][] = [
   [0, { ...WIDE, s: 1 }],
-  [4.85, { ...WIDE, s: 1.03 }],
-  [6.1, TRAY],
-  [23.3, { ...TRAY, s: 3.7 }],
-  [24.0, MENU_CAM],
-  [28.1, { ...MENU_CAM, s: 2.66 }],
-  [29.3, WIDE],
+  [cue.squash + 0.85, { ...WIDE, s: 1.03 }],
+  [cue.online + 0.1, TRAY],
+  [cue.menu - 0.7, { ...TRAY, s: 3.7 }],
+  [cue.menu, MENU_CAM],
+  [cue.fold + 0.1, { ...MENU_CAM, s: 2.66 }],
+  [cue.fold + 1.3, WIDE],
 ];
 // Holds drift linearly (the frame never freezes); moves between them are eased.
-const HOLDS = new Set([0, 6.1, 24.0]);
+const HOLDS = new Set([0, cue.online + 0.1, cue.menu]);
 export const camAt = (t: number): Cam => {
   for (let i = 0; i < camKeys.length - 1; i++) {
     const [a, ca] = camKeys[i];
@@ -91,8 +91,8 @@ const changes: [number, State | "hidden"][] = [
   [cue.crash, "error"],
   [cue.retry, "connecting"],
   [cue.onlineB, "online"],
-  [18.75, "connecting"], // an ordinary network blip: icon only, no notification
-  [19.25, "online"],
+  [cue.chapterC + 0.75, "connecting"], // an ordinary network blip: icon only, no notification
+  [cue.chapterC + 1.25, "online"],
   [cue.auth, "auth"],
   [cue.signedIn, "connecting"],
   [cue.onlineC, "online"],
@@ -138,21 +138,21 @@ export const ROW_STOP = MENU_ROWS.findIndex((r) => r.text === "Stop agent");
 
 type Way = [number, { x: number; y: number }];
 const path: Way[] = [
-  [2.3, { x: 1330, y: 760 }],
+  [cue.pain - 0.3, { x: 1330, y: 760 }],
   [sfx.hover, closeAt],
   [sfx.retreat, closeAt],
   [cue.squash, { x: closeAt.x - 50, y: closeAt.y + 44 }],
-  [20.85, { x: 1935, y: 1000 }],
-  [21.4, toastAt],
+  [cue.auth + 0.85, { x: 1935, y: 1000 }],
+  [cue.toastClick - 0.1, toastAt],
   [cue.toastClick + 0.25, toastAt],
-  [23.75, trayAt],
+  [cue.menu - 0.25, trayAt],
   [cue.menu + 0.2, trayAt],
-  [24.6, rowAt(ROW_RESTART)],
-  [25.3, rowAt(ROW_RESTART)],
-  [25.7, rowAt(ROW_STOP)],
+  [cue.menu + 0.6, rowAt(ROW_RESTART)],
+  [cue.menu + 1.3, rowAt(ROW_RESTART)],
+  [cue.menu + 1.7, rowAt(ROW_STOP)],
 ];
 export const cursorAt = (t: number) => {
-  const visible = (t >= 2.3 && t < cue.squash + 0.2) || (t >= 20.85 && t < cue.fold + 0.25);
+  const visible = (t >= cue.pain - 0.3 && t < cue.squash + 0.2) || (t >= cue.auth + 0.85 && t < cue.fold + 0.25);
   if (!visible) return undefined;
   let p = path[0][1];
   for (let i = 0; i < path.length - 1; i++) {
@@ -164,7 +164,7 @@ export const cursorAt = (t: number) => {
     }
     if (t > b) p = pb;
   }
-  const opacity = t < cue.squash + 0.2 ? lin(t, [2.3, 2.45, cue.squash, cue.squash + 0.2], [0, 1, 1, 0]) : lin(t, [cue.fold, cue.fold + 0.25], [1, 0]);
+  const opacity = t < cue.squash + 0.2 ? lin(t, [cue.pain - 0.3, cue.pain - 0.15, cue.squash, cue.squash + 0.2], [0, 1, 1, 0]) : lin(t, [cue.fold, cue.fold + 0.25], [1, 0]);
   const press = Math.max(
     lin(t, [cue.toastClick, cue.toastClick + 0.04, cue.toastClick + 0.12], [0, 1, 0]),
     lin(t, [sfx.rightClick, sfx.rightClick + 0.04, sfx.rightClick + 0.12], [0, 1, 0]),

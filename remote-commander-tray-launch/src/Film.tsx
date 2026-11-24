@@ -1,15 +1,31 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { FPS, bump, cue, glide, hexMix, impact, lin, mix, pop, reveal } from "./clock";
-import { DISPLAY_FONT, MONO_FONT, Taskbar, Wallpaper } from "./Desktop";
+import { FPS, SECONDS, bump, cue, sfx, glide, hexMix, impact, lin, mix, pop, reveal } from "./clock";
+import { Taskbar, Wallpaper } from "./Desktop";
 import { MENU, TOAST, TRAY_ICON, WINDOW, toScreen } from "./geometry";
 import { STATE_COLOR, StatusIcon } from "./StatusIcon";
 import { Terminal } from "./Terminal";
+import { COPY, DISPLAY, HEAVY, Lang } from "./copy";
 import { FOLD_END, FOLD_START, camAt, cursorAt, foldAt, iconAt, menuHoverAt } from "./timeline";
 import { Cursor, TrayMenu, Toast } from "./Widgets";
 
 const INK = "#f4f6fa";
 const MUTED = "#9aa4b2";
+
+export const LangContext = React.createContext<Lang>("en");
+const useLang = () => React.useContext(LangContext);
+
+/** A full-width 。or ？ at the end of a centred CJK line pushes it right: pull it back. */
+const Tail: React.FC<{ text: string }> = ({ text }) => {
+  const last = text.slice(-1);
+  if (!"。？！".includes(last)) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, -1)}
+      <span style={{ marginRight: "-0.45em" }}>{last}</span>
+    </>
+  );
+};
 
 /** A line of copy: blurs in on its cue, blurs out before the next one. */
 const Line: React.FC<{
@@ -21,7 +37,8 @@ const Line: React.FC<{
   color?: string;
   style?: React.CSSProperties;
   children: React.ReactNode;
-}> = ({ t, at, until, size, weight = 600, color = INK, style, children }) => {
+}> = ({ t, at, until, size, weight, color = INK, style, children }) => {
+  const lang = useLang();
   const inK = reveal(t, at - 0.06, at + 0.4);
   const outK = lin(t, [until - 0.28, until], [0, 1]);
   const k = inK * (1 - outK);
@@ -31,9 +48,9 @@ const Line: React.FC<{
     <div
       style={{
         position: "absolute",
-        fontFamily: DISPLAY_FONT,
+        fontFamily: DISPLAY[lang],
         fontSize: size,
-        fontWeight: weight,
+        fontWeight: weight ?? HEAVY[lang],
         letterSpacing: size > 60 ? -0.012 * size : 0,
         lineHeight: 1.12,
         color,
@@ -54,7 +71,7 @@ export const World: React.FC<{ t: number }> = ({ t }) => {
   const fold = foldAt(t);
   const icon = iconAt(t);
   const cursor = cursorAt(t);
-  const closeHover = lin(t, [3.12, 3.25, 3.7, 3.82], [0, 1, 1, 0]);
+  const closeHover = lin(t, [sfx.hover - 0.13, sfx.hover, sfx.retreat, sfx.retreat + 0.12], [0, 1, 1, 0]);
   const terminalButton = 1 - glide(t, [FOLD_START + 0.2, FOLD_START + 0.6], [0, 1]);
 
   // Sign out → sign in: the desktop goes dark and comes back the next morning.
@@ -121,7 +138,7 @@ export const World: React.FC<{ t: number }> = ({ t }) => {
             top: TRAY_ICON.y - 8,
             width: 16,
             height: 16,
-            opacity: icon.opacity * (t < 28.3 ? 1 : 0),
+            opacity: icon.opacity * (t < cue.fold + 0.3 ? 1 : 0),
             transform: `scale(${icon.scale})`,
           }}
         >
@@ -222,7 +239,7 @@ export const World: React.FC<{ t: number }> = ({ t }) => {
 
 /** The status icon leaves the tray and becomes the app's logo. */
 const Hero: React.FC<{ t: number }> = ({ t }) => {
-  const lift = glide(t, [28.3, cue.logo - 0.1], [0, 1]);
+  const lift = glide(t, [cue.fold + 0.3, cue.logo - 0.1], [0, 1]);
   if (lift <= 0) return null;
   const cam = camAt(t);
   const from = toScreen({ x: TRAY_ICON.x, y: TRAY_ICON.y }, cam);
@@ -253,13 +270,13 @@ const Hero: React.FC<{ t: number }> = ({ t }) => {
   );
 };
 
-const NAME = "Remote Commander Tray";
-
 const EndCard: React.FC<{ t: number }> = ({ t }) => {
+  const lang = useLang();
+  const copy = COPY[lang];
   const nameK = reveal(t, cue.name2 - 0.05, cue.name2 + 0.45);
   const shine = lin(t, [cue.name2 + 0.25, cue.name2 + 1.05], [-30, 130]);
   const tagK = reveal(t, cue.tagline - 0.05, cue.tagline + 0.45);
-  const fadeOut = lin(t, [34.4, 35], [0, 1]);
+  const fadeOut = lin(t, [SECONDS - 0.6, SECONDS], [0, 1]);
   if (t < cue.name2 - 0.1) return null;
   return (
     <AbsoluteFill style={{ opacity: 1 - fadeOut }}>
@@ -269,7 +286,7 @@ const EndCard: React.FC<{ t: number }> = ({ t }) => {
           top: 520,
           width: "100%",
           textAlign: "center",
-          fontFamily: DISPLAY_FONT,
+          fontFamily: DISPLAY[lang],
           fontSize: 92,
           fontWeight: 600,
           letterSpacing: -1.2,
@@ -282,7 +299,7 @@ const EndCard: React.FC<{ t: number }> = ({ t }) => {
           color: "transparent",
         }}
       >
-        {NAME}
+        {copy.name}
       </div>
       <div
         style={{
@@ -290,7 +307,7 @@ const EndCard: React.FC<{ t: number }> = ({ t }) => {
           top: 652,
           width: "100%",
           textAlign: "center",
-          fontFamily: DISPLAY_FONT,
+          fontFamily: DISPLAY[lang],
           fontSize: 42,
           fontWeight: 500,
           color: MUTED,
@@ -299,7 +316,7 @@ const EndCard: React.FC<{ t: number }> = ({ t }) => {
           transform: `translateY(${(1 - tagK) * 12}px)`,
         }}
       >
-        No console window. Always ready in your tray.
+        {lang === "zh" ? <Tail text={copy.tagline} /> : copy.tagline}
       </div>
       <GetRow t={t} />
     </AbsoluteFill>
@@ -323,6 +340,7 @@ const GitHubMark: React.FC = () => (
 );
 
 const GetRow: React.FC<{ t: number }> = ({ t }) => {
+  const lang = useLang();
   const items: [React.ReactNode, string][] = [
     [<StoreMark key="s" />, "Microsoft Store"],
     [<GitHubMark key="g" />, "GitHub"],
@@ -341,7 +359,7 @@ const GetRow: React.FC<{ t: number }> = ({ t }) => {
               gap: 16,
               opacity: o,
               transform: `translateY(${(1 - k) * 18}px) scale(${0.92 + 0.08 * k})`,
-              fontFamily: DISPLAY_FONT,
+              fontFamily: DISPLAY[lang],
               fontSize: 36,
               fontWeight: 500,
               color: "#e8ecf2",
@@ -356,14 +374,31 @@ const GetRow: React.FC<{ t: number }> = ({ t }) => {
   );
 };
 
-const FACTS = ["Microsoft Store & portable", "x64 & ARM64", "No admin rights", "Never reads your credentials"];
+const Lines: React.FC<{ lines: readonly string[] }> = ({ lines }) => (
+  <>
+    {lines.map((l, i) => (
+      <React.Fragment key={l}>
+        {i > 0 && <br />}
+        {l}
+      </React.Fragment>
+    ))}
+  </>
+);
 
-export const Film: React.FC = () => {
+export const Film: React.FC<{ lang?: Lang }> = ({ lang = "en" }) => (
+  <LangContext.Provider value={lang}>
+    <FilmBody />
+  </LangContext.Provider>
+);
+
+const FilmBody: React.FC = () => {
+  const lang = useLang();
+  const copy = COPY[lang];
   const frame = useCurrentFrame();
   const t = frame / FPS;
   const cam = camAt(t);
   const breathe = 1 + 0.006 * impact(t);
-  const endDim = lin(t, [28.6, 29.6], [0, 1]);
+  const endDim = lin(t, [cue.fold + 0.6, cue.fold + 1.6], [0, 1]);
 
   return (
     <AbsoluteFill style={{ background: "#000", overflow: "hidden" }}>
@@ -384,33 +419,32 @@ export const Film: React.FC = () => {
         <AbsoluteFill style={{ background: "#05070b", opacity: endDim * 0.97 }} />
       </AbsoluteFill>
 
-      {/* Copy: one line at a time, in screen space. */}
-      <Line t={t} at={cue.hook} until={cue.squash + 0.15} size={84} style={{ top: 92, width: "100%", textAlign: "center", transformOrigin: "50% 50%" }}>
-        The window you can&rsquo;t close.
+      {/* Copy: one line at a time, in screen space. The hook is already up on frame 0. */}
+      <Line t={t} at={cue.hook - 0.5} until={cue.pain} size={84} style={{ top: 88, width: "100%", textAlign: "center", transformOrigin: "50% 50%" }}>
+        {lang === "zh" ? <Tail text={copy.hook} /> : copy.hook}
       </Line>
-      <Line t={t} at={cue.name} until={cue.sleep - 0.15} size={104} style={{ left: 128, top: 300 }}>
-        Remote Commander Tray
+      <Line t={t} at={cue.pain} until={cue.squash + 0.15} size={84} style={{ top: 88, width: "100%", textAlign: "center", transformOrigin: "50% 50%" }}>
+        {lang === "zh" ? <Tail text={copy.pain} /> : copy.pain}
       </Line>
-      <Line t={t} at={cue.value} until={cue.sleep - 0.15} size={48} weight={500} color={MUTED} style={{ left: 132, top: 440 }}>
-        No console window. Always ready in your tray.
+      <Line t={t} at={cue.name} until={cue.sleep - 0.15} size={104} weight={HEAVY.en} style={{ left: 128, top: 300 }}>
+        {copy.name}
+      </Line>
+      <Line t={t} at={cue.value} until={cue.sleep - 0.15} size={lang === "zh" ? 52 : 48} weight={500} color={MUTED} style={{ left: 132, top: 440 }}>
+        {copy.value}
       </Line>
       <Line t={t} at={cue.sleep} until={cue.chapterB} size={76} style={{ left: 128, top: 128 }}>
-        Starts when you sign in.
-        <br />
-        Connects on its own.
+        <Lines lines={copy.signIn} />
       </Line>
       <Line t={t} at={cue.chapterB} until={cue.chapterC} size={76} style={{ left: 128, top: 128 }}>
-        Crashes? It restarts itself.
+        <Lines lines={copy.crash} />
       </Line>
       <Line t={t} at={cue.chapterC} until={cue.menu - 0.35} size={76} style={{ left: 128, top: 128 }}>
-        Quiet until it needs you.
+        <Lines lines={copy.quiet} />
       </Line>
       <Line t={t} at={cue.menu} until={cue.fold} size={76} style={{ left: 120, top: 250 }}>
-        Zero console clutter.
-        <br />
-        Full lifecycle control.
+        <Lines lines={copy.control} />
       </Line>
-      {FACTS.map((fact, i) => (
+      {copy.facts.map((fact, i) => (
         <Line
           key={fact}
           t={t}
@@ -419,7 +453,7 @@ export const Film: React.FC = () => {
           size={34}
           weight={500}
           color="#c9d1dc"
-          style={{ left: 124 + (i % 2) * 560, top: 500 + Math.floor(i / 2) * 62, fontFamily: DISPLAY_FONT }}
+          style={{ left: 124 + (i % 2) * 560, top: 500 + Math.floor(i / 2) * 62 }}
         >
           {fact}
         </Line>
@@ -427,9 +461,6 @@ export const Film: React.FC = () => {
 
       <Hero t={t} />
       <EndCard t={t} />
-
-      <AbsoluteFill style={{ background: "#000", opacity: lin(t, [0, 0.25], [1, 0]) }} />
     </AbsoluteFill>
   );
 };
-
