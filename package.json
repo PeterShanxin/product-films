@@ -24,7 +24,11 @@
     "studio:cat-drama": "remotion studio cat-drama/src/index.ts --public-dir=cat-drama/public",
     "audio:15s": "python launch-15s/audio/synth.py",
     "audio:cat-drama": "python cat-drama/audio/drama.py",
-    "render:15s": "remotion render launch-15s/src/index.ts LaunchFilm launch-15s/out/meowcal-sub-launch-film.mp4 --public-dir=launch-15s/public"
+    "render:15s": "remotion render launch-15s/src/index.ts LaunchFilm launch-15s/out/meowcal-sub-launch-film.mp4 --public-dir=launch-15s/public",
+    "studio:astra-first-look": "remotion studio astra-first-look/src/index.tsx --public-dir=astra-first-look/public --no-open",
+    "audio:astra-first-look": "node astra-first-look/audio/score/render-score.mjs astra-first-look/audio/score.json astra-first-look/public/score.wav --ffmpeg ffmpeg",
+    "render:astra-first-look": "remotion render astra-first-look/src/index.tsx AstraFirstLook astra-first-look/out/picture.mp4 --public-dir=astra-first-look/public --muted --crf=16 && ffmpeg -v error -y -i astra-first-look/out/picture.mp4 -i astra-first-look/public/score.wav -map 0:v -map 1:a -c:v copy -af volume=-0.6dB -c:a aac -b:a 256k -ar 48000 -movflags +faststart -t 46 astra-first-look/out/astra-first-look.mp4",
+    "cover:astra-first-look": "remotion still astra-first-look/src/index.tsx AstraFirstLookCover astra-first-look/out/cover.png --public-dir=astra-first-look/public"
   },
   "dependencies": {
     "@remotion/cli": "4.0.529",

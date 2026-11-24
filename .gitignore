@@ -16,3 +16,9 @@ sub2-remix/public/audio/*.wav
 
 # remote-commander-tray-launch: the master is rebuilt by audio/build.py
 remote-commander-tray-launch/public/audio/*.wav
+
+# astra-first-look: Astra's film, the re-rendered loops, cover plates and the score are rebuilt by its scripts
+astra-first-look/public/film/
+astra-first-look/public/loops/*.mp4
+astra-first-look/public/cover/
+astra-first-look/public/*.wav
