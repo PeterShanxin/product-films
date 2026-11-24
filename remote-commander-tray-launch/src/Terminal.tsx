@@ -26,8 +26,8 @@ export const Terminal: React.FC<{ t: number; closeHover: number }> = ({ t, close
   const name = command.slice(0, "desktop-commander".length);
   const rest = command.slice("desktop-commander".length);
   const lines = LOG.filter((_, i) => t >= LOG_TIMES[i]);
-  const caretOn = Math.floor(t * 2.2) % 2 === 0 || (t > sfx.typeStart && t < 1.5);
-  const caretAfterCommand = t < 1.5;
+  const caretOn = t < sfx.logStart || Math.floor(t * 2.2) % 2 === 0; // solid while typing
+  const caretAfterCommand = t < sfx.logStart;
 
   return (
     <div

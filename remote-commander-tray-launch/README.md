@@ -1,31 +1,38 @@
 # Remote Commander Tray: launch film
 
-A 35-second launch film for [Remote Commander Tray](https://github.com/PeterShanxin/Remote-Commander-Tray), made in code
+A 35-second launch film, in English and Chinese cuts, for [Remote Commander Tray](https://github.com/PeterShanxin/Remote-Commander-Tray), made in code
 (Remotion + React + TypeScript) with a score arranged from recorded CC0
 instrument samples.
 
 **Concept:** the console window you can't close folds itself into one status
 icon in your tray, and that icon still does everything the window did.
 
-One continuous take. A PowerShell window runs `desktop-commander remote`
-("The window you can't close."). It folds and flies into the notification area,
-where it lands as the tray's real status icon and turns green on the music's
-drop. The camera stays on the tray for one ordinary day: it starts at sign-in,
-restarts itself after a crash, and stays silent through a network blip. It
-raises one notification, when sign-in is needed, which the user answers with a
-single click. Then a right-click opens the real menu. Finally the icon leaves
-the tray and becomes the app's logo.
+One continuous take. It opens by naming its audience: from frame 0,
+"Using Desktop Commander Remote?" / 「你也在用 Desktop Commander Remote 吗？」 over
+a PowerShell window where `desktop-commander remote` is being typed. The second
+line names the pain while the cursor hovers the close button: "Close this
+window, and your PC goes offline." / 「这个窗口一关，电脑就掉线。」 Then the
+window folds into the tray and lands as the real status icon, green on the
+music's drop. The camera stays on the tray for one ordinary day: it starts at
+sign-in, restarts itself after a crash, and stays silent through a network
+blip. It raises one notification, when sign-in is needed, which the user
+answers with a single click. Then a right-click opens the real menu. Finally the
+icon leaves the tray and becomes the app's logo.
 
-| Time | Beat | On screen |
+| Time | Beat | On screen (EN / ZH) |
 | --- | --- | --- |
-| 0–4 s | Pain | PowerShell running `desktop-commander remote`, cursor hovers the close button: **The window you can't close.** |
-| 4–6 s | Magic moment | The window folds into the tray and lands as the status icon; it turns green on the drop |
-| 6.5–10 s | Name + value | **Remote Commander Tray** / No console window. Always ready in your tray. |
-| 10–14 s | Sign-in | Screen goes dark, clock jumps to the next morning, icon Connecting → Online: **Starts when you sign in. Connects on its own.** |
-| 14–18 s | Crash | Offline icon, backoff ring, Connecting → Online: **Crashes? It restarts itself.** |
-| 18–24 s | The user's one decision | Silent reconnect, then Authentication required + the real notification text, one click: **Quiet until it needs you.** |
-| 24–28 s | Proof | The real tray menu: **Zero console clutter. Full lifecycle control.** Microsoft Store & portable · x64 & ARM64 · No admin rights · Never reads your credentials |
+| 0–2 s | Who it's for, from frame 0 | **Using Desktop Commander Remote?** / 你也在用 Desktop Commander Remote 吗？ while the command is typed and logs stream |
+| 2–4 s | Pain | **Close this window, and your PC goes offline.** / 这个窗口一关，电脑就掉线。 Cursor hovers the red close button |
+| 4–6 s | Magic moment | The window folds into the tray and lands as the status icon; green on the drop at 6 s |
+| 6.5–10 s | Name + value | **Remote Commander Tray** / No console window. Always ready in your tray. · 告别黑窗口，托盘里随时待命。 |
+| 10–14 s | Sign-in | Dark, clock jumps to the next morning, Connecting → Online: Starts when you sign in. Connects on its own. / 登录即启动，自动连上线。 |
+| 14–18 s | Crash | Offline, backoff ring, Online: Crashes? It restarts itself. / 崩了？自己重启。 |
+| 18–24 s | The user's one decision | Silent reconnect, then the sign-in notification, one click: Quiet until it needs you. / 没事不打扰，有事才找你。 |
+| 24–28 s | Proof | The real menu: Zero console clutter. Full lifecycle control. / 桌面清清爽爽，启停尽在掌控。 + four facts |
 | 28–35 s | Brand | Icon → app logo, name, tagline, Microsoft Store · GitHub |
+
+The app's own UI (console, menu, notification) stays English in both cuts: the
+app ships in English only. Copy for both cuts lives in `src/copy.ts`.
 
 ## What the film shows vs what the app does
 
@@ -85,28 +92,26 @@ python audio/build.py
 node audio/score/check-sync.mjs out/music.wav audio/score.json
 npx tsc --noEmit
 npm run studio            # http://localhost:3117 → LaunchFilm (with sound)
-npm run render:picture    # silent picture → out/picture.mp4
-python scripts/mux.py out/remote-commander-tray-launch-v3.mp4
-python scripts/verify.py out/remote-commander-tray-launch-v3.mp4
-node audio/score/check-sync.mjs out/remote-commander-tray-launch-v3.mp4 audio/score.json --ffmpeg ffmpeg
-npm run cover             # out/cover.png
+npx remotion render src/index.ts LaunchFilmSilent out/picture.mp4 --muted --codec=h264 --crf=16 --pixel-format=yuv420p --color-space=bt709
+python scripts/mux.py out/remote-commander-tray-launch-en-v5.mp4
+python scripts/verify.py out/remote-commander-tray-launch-en-v5.mp4
+node audio/score/check-sync.mjs out/remote-commander-tray-launch-en-v5.mp4 audio/score.json --ffmpeg ffmpeg
+# Chinese cut: the same with LaunchFilmZhSilent and ...-zh-v5.mp4
+npx remotion still src/index.ts Cover out/cover-en.png
+npx remotion still src/index.ts CoverZh out/cover-zh.png
 ```
 
 The picture is rendered silent and the master muxed in afterwards, so the audio
 lands exactly where the score put it.
 
-## Release master (v3)
+## Release masters
 
-| | Measured |
-| --- | --- |
-| File | `remote-commander-tray-launch-v3.mp4`, 6.0 MB, published as release [`rct-launch-v1.0.0`](https://github.com/PeterShanxin/product-films/releases/tag/rct-launch-v1.0.0) |
-| SHA-256 | `c070d3e5786c82ede4180317ad2d67723fa64ee6d24e192d20177cbd2640a2dc` |
-| Duration | 35.000 s, 2100 frames |
-| Video | H.264 High, 1920 × 1080, 60 fps, yuv420p, BT.709 (primaries, transfer, matrix), tv range |
-| Audio | AAC stereo 48 kHz, 256 kb/s |
-| Loudness | −14.0 LUFS integrated, −1.3 dBTP true peak, LRA 3.5 LU |
-| Decode | full decode, no errors |
-| Sync | 26 of 26 cues within ±15 ms on the MP4 |
+Measured by `scripts/verify.py` and `check-sync.mjs` (v5, both cuts): 35.000 s,
+1920 × 1080, 60 fps, H.264 High yuv420p BT.709, AAC stereo 48 kHz,
+−14.0 LUFS, −1.6 dBTP, full decode clean, 26 of 26 cues within ±15 ms.
+Published as release
+[`rct-launch-v1.1.0`](https://github.com/PeterShanxin/product-films/releases/tag/rct-launch-v1.1.0);
+the first, English-only cut is [`rct-launch-v1.0.0`](https://github.com/PeterShanxin/product-films/releases/tag/rct-launch-v1.0.0).
 
 ## Credits
 

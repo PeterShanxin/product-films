@@ -8,7 +8,7 @@ Reads audio/score.json and writes:
   out/mix.premaster.wav   music + keys
   public/audio/mix.wav    the master the composition plays
 
-The master is brought to -14 LUFS with a limiter ceiling of -2.4 dBFS, which
+The master is brought to -14 LUFS with a limiter ceiling of -3.2 dBFS, which
 leaves room for the AAC encode to stay under -1 dBTP. Needs Node, NumPy and
 FFmpeg (PATH or the FFMPEG environment variable).
 """
@@ -29,7 +29,7 @@ ROOT = Path(__file__).resolve().parent.parent
 FFMPEG = os.environ.get("FFMPEG", "ffmpeg")
 SR = 48_000
 TARGET_I = -14.0
-CEILING_DB = -2.4
+CEILING_DB = -3.2
 
 score = json.loads((ROOT / "audio" / "score.json").read_text(encoding="utf-8"))
 cue, sfx = score["cues"], score["sfx"]
@@ -68,6 +68,8 @@ def build_keys() -> np.ndarray:
     buf = np.zeros((int(score["seconds"] * SR), 2))
 
     def put(seconds: float, x: np.ndarray, gain: float, pan: float = 0.0) -> None:
+        if seconds < 0:  # typed before the film starts
+            return
         k = int(round(seconds * SR))
         end = min(k + len(x), len(buf))
         buf[k:end, 0] += x[: end - k] * gain * (1 - max(0.0, pan))
@@ -81,7 +83,7 @@ def build_keys() -> np.ndarray:
         last = pick
         put(sfx["typeStart"] + i * sfx["typeStep"], keys[pick], rng.uniform(0.4, 0.62), rng.uniform(-0.15, 0.15))
     enter = keys[int(order[-1])]  # the heaviest key is the Enter key
-    put(cue["enter"], enter, 0.75)
+    put(sfx["enter"], enter, 0.75)
     # Mouse button down, then softer up ~70 ms later.
     for at in (cue["toastClick"], sfx["rightClick"]):
         put(at, click, 0.6)
@@ -101,6 +103,7 @@ def master(source: Path, target: Path) -> dict:
     """Gain to the target loudness, catch the drum peaks with a look-ahead
     limiter, measure, and trim once more so the result sits on the target."""
     ceiling = 10 ** (CEILING_DB / 20)
+    target.parent.mkdir(parents=True, exist_ok=True)
     gain = TARGET_I - float(loudness(source)["input_i"])
     for _ in range(3):
         subprocess.run(

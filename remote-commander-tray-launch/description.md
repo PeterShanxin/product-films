@@ -41,7 +41,7 @@ unicaegames (CC0).
 
 ## Short post (X)
 
-The window you can't close, gone. Remote Commander Tray runs Desktop Commander
+Using Desktop Commander Remote? Close its window and your PC goes offline. Remote Commander Tray runs Desktop Commander
 Remote from your Windows tray: starts at sign-in, restarts after crashes, and
 speaks up only when you need to sign in. Free on Microsoft Store and GitHub.
 https://github.com/PeterShanxin/Remote-Commander-Tray

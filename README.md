@@ -15,7 +15,7 @@ frame-based timeline per film.
 
 | Folder | Film | Cuts | Status |
 | --- | --- | --- | --- |
-| [`remote-commander-tray-launch/`](remote-commander-tray-launch/) | The window you can't close: one take in which a PowerShell window running `desktop-commander remote` folds into the tray's real status icon, which then starts at sign-in, restarts after a crash, asks only when sign-in is needed, and opens its real menu. | 35 s landscape 1080p60 and cover | Released: [rct-launch-v1.0.0](https://github.com/PeterShanxin/product-films/releases/tag/rct-launch-v1.0.0) |
+| [`remote-commander-tray-launch/`](remote-commander-tray-launch/) | Using Desktop Commander Remote? Close its window and your PC goes offline. One take in which that PowerShell window folds into the tray's real status icon, which then starts at sign-in, restarts after a crash, asks only when sign-in is needed, and opens its real menu. English and Chinese cuts. | 35 s landscape 1080p60 (EN + ZH) and covers | Released: [rct-launch-v1.1.0](https://github.com/PeterShanxin/product-films/releases/tag/rct-launch-v1.1.0) |
 
 ### Meowcal Sub
 
