@@ -13,3 +13,6 @@ fable-vs-astra/public/audio/*.wav
 sub2-remix/public/frames/
 sub2-remix/public/fonts/
 sub2-remix/public/audio/*.wav
+
+# remote-commander-tray-launch: the master is rebuilt by audio/build.py
+remote-commander-tray-launch/public/audio/*.wav

@@ -1,0 +1,28 @@
+{
+  "name": "remote-commander-tray-launch-film",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Launch film for Remote Commander Tray",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "audio": "python audio/build.py",
+    "studio": "remotion studio src/index.ts --no-open --port=3117",
+    "render:picture": "remotion render src/index.ts LaunchFilmSilent out/picture.mp4 --muted --codec=h264 --crf=16 --pixel-format=yuv420p --color-space=bt709",
+    "render": "npm run render:picture && python scripts/mux.py",
+    "cover": "remotion still src/index.ts Cover out/cover.png",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.543",
+    "@remotion/cli": "4.0.543",
+    "@remotion/renderer": "4.0.543",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.543"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "typescript": "5.9.3"
+  }
+}
